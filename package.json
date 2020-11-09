@@ -1,0 +1,23 @@
+{
+  "name": "wact",
+  "version": "0.1.0",
+  "description": "Actor definition framework for nact.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jack0son/wact.git"
+  },
+  "keywords": [
+    "actor",
+    "nact"
+  ],
+  "author": "jack0son",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jack0son/wact/issues"
+  },
+  "homepage": "https://github.com/jack0son/wact#readme"
+}
