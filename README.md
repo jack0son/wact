@@ -1,8 +1,10 @@
-# wAct - Actor System
+# wAct
 
-wAct is a wrapper framework for [Nact](https://github.com/ncthbrt/nact) that provides
+wAct is an actor composition framework for [Nact](https://github.com/ncthbrt/nact) that provides
 message and actor structure, common actor behaviour (like state machines), and
 supervision policies.
+
+_ **Wactors** are made out of **Nactors**. _
 
 Nact is a compact message-oriented middleware which facilitates message based
 communication between isolated entities called actors. The actor model is useful
