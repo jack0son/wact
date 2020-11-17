@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/jack0son/wact#readme",
   "dependencies": {
-    "@packages/lib": "0.4.0",
-    "deepmerge": "^4.2.2",
+    "node-logger": "git://github.com/jack0son/node-logger.git",
+    "node-utils": "git://github.com/jack0son/node-utils.git",
     "dotenv": "^8.2.0",
     "nact": "^7.2.2",
     "nact-persistence-postgres": "^7.3.1"
