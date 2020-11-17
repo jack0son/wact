@@ -14,6 +14,9 @@ of the domain logic by using a sequential execution lifecycle within each actor.
 Actors protect against concurrency problems caused by shared state and
 side-effects; essentially by treating your application as a distributed system.
 
+You can use Wact with an existing Nact system by passing the nact `system` object
+to `wact.bootstrap()`.
+
 **Outcomes**
 
 - Failure isolation
@@ -95,11 +98,34 @@ Actions are simply Nact target functions: functions with the signature
 
 ##### Receivers
 
-Common methods made available in the actor context.
+Functions can be made available in the actor context object to give all actions in
+an actor convenient access to common functions like replies.
 
-##### Reducers
+Receivers are specified as a higher order function which accepts the message
+bundle `{ state, msg, ctx }` as its only argument.
 
-##### Effects
+Receivers are specified as an array of receiver functions.
+
+```js
+// Reply receiver HOF
+const reply = ({ state, msg, ctx }) => (message) =>
+  dispatch(ctx.sender, message, ctx.self);
+
+const actor = {
+  properties: {
+    receivers: [reply],
+  },
+  actions: {
+    report: (msg, state, ctx) => {
+      ctx.receivers.reply(makeReport(state));
+    },
+  },
+};
+```
+
+> ##### Reducers
+
+> ##### Effects
 
 #### Actor Composition
 
@@ -110,15 +136,20 @@ to the `adapt()` or `compose()` methods to a new definition.
 Constructing actor definitions using simple bags of properties simplifies
 inheritance and code reuse between actors.
 
-@NB Note that these methods are not currently pure so they may mutate passed
-actor definitions leading to inscrutable state sharing issues.
+##### Adapters
 
-`wact.adapt()`
+Adapters are actor defintion mixins, usually included using the spread operator.
 
-`wact.compose()`
+```js
+// My actor's unique properites
+const actions = {...}; const properties = {...};
 
-Care must be taken when constructing action methods using closures, if the
-methods are intended to be used for composition of other actors.
+// ex1. Simple actions adapter
+const myActorDefn = { actions: { ...actions, ...AdapterActions() }, properties };
+
+// ex2. Adapter with complete defintion, actions & properties
+const actorDefn = wact.adapt({ actions, properties }, AdapterDefinition());
+```
 
 If you want an actor, or a set of actions to be able to address messages to
 specific action methods, regardless of the addressee actor's external
@@ -139,21 +170,6 @@ function action_queue(state, msg, ctx) => {
 The directory maps methods to Symbols allowing the actions to be addressed by
 their method name. The directory can be exposed in the definition to be used by
 inheritors, or as a module used by other actors to address messages.
-
-##### Adapters
-
-Adapters are actor defintion mixins, usually included using the spread operator.
-
-```js
-// My actor's unique properites
-const actions = {...}; const properties = {...};
-
-// Simple actions adapter
-const myActorDefn = { actions: { ...actions, ...AdapterActions() }, properties };
-
-// Adapter with complete defintion, actions & properties
-const actorDefn = wact.adapt({ actions, properties }, AdapterDefinition());
-```
 
 **Why use closures instead of classes to define actors?**
 Compositional inheritence. Also allows actions to consistently use `this` to refer to the message context, while
@@ -231,3 +247,11 @@ Reactive Manifesto](https://www.reactivemanifesto.org/).
   Processes
 - Redux on the server
 - Object concurrency model
+
+**Checklist**
+
+- [ ] Care must be taken when constructing action methods using closures, if the
+      methods are intended to be used for composition of other actors.
+- [ ] adapt and compose are not pure so they may mutate passed
+      actor definitions leading to inscrutable state sharing issues.
+- [ ] Typescript type definition for receivers
