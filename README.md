@@ -7,7 +7,7 @@ supervision policies.
 _**Wactors** are made out of **Nactors**._
 
 Nact is a compact message-oriented middleware which facilitates message based
-communication between isolated entities called actors. The actor model enables
+communication between isolated entities called actors. The actor model
 enables functional programming as it relegates all state mutations to the edge
 of the domain logic by using a sequential execution lifecycle within each actor.
 
@@ -88,7 +88,7 @@ spawning Nactors available - `spawn()`, `spawnStateless()`, etc.
 
 ### Actor Definitions
 
-An actor definition is a plain object containing and actions `property` and
+An actor definition is a plain object containing an actions `property` and
 a `properties` property.
 
 #### Actions
@@ -131,7 +131,7 @@ const actor = {
 
 Actors can be composed by manually merging their definitions (actions and
 properties), commonly using the spread operator, or by passing their definitions
-to the `adapt()` or `compose()` methods to a new definition.
+to the `adapt()` or `compose()` methods, creating a new definition.
 
 Constructing actor definitions using simple bags of properties simplifies
 inheritance and code reuse between actors.
@@ -172,8 +172,8 @@ their method name. The directory can be exposed in the definition to be used by
 inheritors, or as a module used by other actors to address messages.
 
 **Why use closures instead of classes to define actors?**
-Compositional inheritence. Also allows actions to consistently use `this` to refer to the message context, while
-also sharing some encolsing context.
+Interface composition over inheritence. It also allows actions to consistently use `this` to refer to the message context, while
+also sharing some enclosing context.
 
 ### Message Protocol
 
@@ -233,7 +233,7 @@ decisions about faults (supervision policy).
 Supervision policies can be easily shared between different services for common
 failure patterns such as API rate-limits or excessive runtime.
 
-By confining faults (fault localisation) to a supervision context it becomes
+By confining faults to a supervision context (fault localisation) it becomes
 much easier to model and manage failure scenarios. System intent is also clearer
 as domain logic is less interleaved with error handling. Read more at [The
 Reactive Manifesto](https://www.reactivemanifesto.org/).
